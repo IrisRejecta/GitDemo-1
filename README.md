@@ -45,9 +45,10 @@
 
    - **HTTPS协议**：需用户名+密码（或GitHub个人访问令牌）
    - **SSH协议**（推荐）：
-   - 生成密钥对：
+     - 生成密钥对：
 
-   ```
+
+   ```bash
    ssh-keygen -t rsa -C "your_email@example.com"  # 三次回车完成生成
    ```
 
