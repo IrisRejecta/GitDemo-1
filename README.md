@@ -49,15 +49,11 @@
 
      - 生成密钥对：
 
-       bash
-
-       复制
-
-       ```
-       ssh-keygen -t rsa -C "your_email@example.com"  # 三次回车完成生成
+       ```bash
+     ssh-keygen -t rsa -C "your_email@example.com"  # 三次回车完成生成
        ```
 
-     - 将公钥`id_rsa.pub`内容添加到GitHub/Gitee的SSH Keys设置中
+     - 将公钥`id_rsa.pub`内容添加到`GitHub/Gitee`的SSH Keys设置中
 
 2. **权限问题处理**
 
@@ -67,16 +63,64 @@
 
      - 本地Git配置的用户名/邮箱是否与远程账户匹配
 
-       bash
-
-       复制
-
-       ```
+       ```bash
        git config --global user.name "用户名"
        git config --global user.email "邮箱"
-       ```
+   ```
 
 3. **分支管理**
 
    - 首次推送需指定远程分支：`git push -u origin 分支名`
    - 后续推送可简化：`git push`
+
+4. **出现22端口拒绝的问题**
+
+   - 出现报错: `ssh: connect to host github.com port 22: Connection refused`可以修改端口至443
+
+     1. **找到 SSH 配置文件**
+
+        在 Windows 下，SSH 配置文件通常位于用户目录的 `.ssh` 文件夹中（例如：`C:\Users\<你的用户名>\.ssh\config`）。如果文件不存在，可以手动创建一个：
+
+        1. 打开资源管理器并导航到 `C:\Users\<你的用户名>\.ssh`。
+        2. 在 `.ssh` 文件夹下，新建一个文件，命名为 `config`（没有扩展名）
+
+     2. **编辑SSH配置文件**
+
+        - 用记事本或其他文本编辑器打开 `config` 文件，添加以下内容：
+
+          ```bash
+          Host github.com
+          HostName ssh.github.com  # 这是最重要的部分
+          User git
+          Port 443
+          PreferredAuthentications publickey
+          IdentityFile C:\Users\<你的用户名>\.ssh\id_rsa
+          ```
+
+          **注意**:
+
+          - `IdentityFile` 的路径需要根据你实际存储 SSH 密钥的位置调整，通常是 `id_rsa` 或 `id_ed25519`。
+
+     3. **验证SSH配置**
+
+        - 开命令提示符或 PowerShell，运行以下命令测试连接：
+
+          ```bash
+          ssh -T git@github.com
+          ```
+
+        - 如果配置正确，你应该看到以下输出：
+
+          ```bash
+          Hi <your-username>! You've successfully authenticated, but GitHub does not provide shell access.
+          ```
+
+     4. 配置Git使用新端口
+
+        - 在命令提示符或 PowerShell 中运行以下命令：
+
+          ```bash
+          git config --global url."ssh://git@ssh.github.com:443".insteadOf "ssh://git@github.com"
+          ```
+
+          
