@@ -44,28 +44,26 @@
 1. **认证方式选择**
 
    - **HTTPS协议**：需用户名+密码（或GitHub个人访问令牌）
-
    - **SSH协议**（推荐）：
+   - 生成密钥对：
 
-     - 生成密钥对：
+   ```
+   ssh-keygen -t rsa -C "your_email@example.com"  # 三次回车完成生成
+   ```
 
-       ```bash
-     ssh-keygen -t rsa -C "your_email@example.com"  # 三次回车完成生成
-       ```
-
-     - 将公钥`id_rsa.pub`内容添加到`GitHub/Gitee`的SSH Keys设置中
+   - 将公钥`id_rsa.pub`内容添加到`GitHub/Gitee`的SSH Keys设置中
 
 2. **权限问题处理**
 
    - 推送时若报错`403 Permission denied`，需检查：
 
      - 远程仓库是否添加当前用户为协作者（GitHub设置 → Collaborators）
-
-     - 本地Git配置的用户名/邮箱是否与远程账户匹配
-
-       ```bash
-       git config --global user.name "用户名"
-       git config --global user.email "邮箱"
+   - 本地Git配置的用户名/邮箱是否与远程账户匹配
+   
+   ```bash
+   git config --global user.name "用户名"
+   git config --global user.email "邮箱"
+   ```
    
 3. **分支管理**
 
